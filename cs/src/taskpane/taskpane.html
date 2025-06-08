@@ -1,55 +1,354 @@
-<!-- Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT License. -->
-<!-- This file shows how to design a first-run page that provides a welcome screen to the user about the features of the add-in. -->
-
 <!DOCTYPE html>
 <html>
-
 <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Contoso Task Pane Add-in</title>
+    <title>Combine Sheetss</title>
 
     <!-- Office JavaScript API -->
-    <script type="text/javascript" src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
+    <script type="text/javascript" src="https://appsforoffice.microsoft.com/lib/1.1/hosted/office.js"></script>
 
-    <!-- For more information on Fluent UI, visit https://developer.microsoft.com/fluentui#/. -->
-    <link rel="stylesheet" href="https://static2.sharepointonline.com/files/fabric/office-ui-fabric-core/11.0.0/css/fabric.min.css"/>
 
-    <!-- Template styles -->
-    <link href="taskpane.css" rel="stylesheet" type="text/css" />
+    <!--START  --- ADDED FOR BOOTSTRAP REF-->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
+    <!--END  ---- ADDED FOR BOOTSTRAP REF-->
+
+
+    <script src="Scripts/jquery-3.6.0.js" type="text/javascript"></script>
+    <script src="Scripts/MessageBanner.js" type="text/javascript"></script>
+
+    <!-- To enable offline debugging using a local reference to Office.js, use:  -->
+    <!-- <script src="Scripts/Office/MicrosoftAjax.js" type="text/javascript"></script>  -->
+    <!-- <script src="Scripts/Office/1/office.js" type="text/javascript"></script>  -->
+    <!-- <link href="walkthrough.css" rel="stylesheet" type="text/css" />-->
+    <script src="Home.js" type="text/javascript"></script>
+    <link href="Home.css" rel="stylesheet" type="text/css" />
+    <link href="Content/Button.css" rel="stylesheet" type="text/css" />
+    <link href="Content/MessageBanner.css" rel="stylesheet" type="text/css" />
+
+
+    <!-- For Office UI Fabric Core, go to https://aka.ms/office-ui-fabric to learn more. -->
+    <link rel="stylesheet" href="https://static2.sharepointonline.com/files/fabric/office-ui-fabric-core/9.6.0/css/fabric.min.css">
+
+    <!-- To enable the offline use of Office UI Fabric Core, use: -->
+    <!-- link rel="stylesheet" href="Content/fabric.min.css" -->
+
 </head>
 
-<body class="ms-font-m ms-welcome ms-Fabric">
-    <header class="ms-welcome__header ms-bgColor-neutralLighter">
-        <img width="90" height="90" src="../../assets/logo-filled.png" alt="Contoso" title="Contoso" />
-        <h1 class="ms-font-su">Welcome</h1>
-    </header>
-    <section id="sideload-msg" class="ms-welcome__main">
-        <h2 class="ms-font-xl">Please <a target="_blank" href="https://learn.microsoft.com/office/dev/add-ins/testing/test-debug-office-add-ins#sideload-an-office-add-in-for-testing">sideload</a> your add-in to see app body.</h2>
-    </section>
-    <main id="app-body" class="ms-welcome__main" style="display: none;">
-        <h2 class="ms-font-xl"> Discover what Office Add-ins can do for you today! </h2>
-        <ul class="ms-List ms-welcome__features">
-            <li class="ms-ListItem">
-                <i class="ms-Icon ms-Icon--Ribbon ms-font-xl"></i>
-                <span class="ms-font-m">Achieve more with Office integration</span>
-            </li>
-            <li class="ms-ListItem">
-                <i class="ms-Icon ms-Icon--Unlock ms-font-xl"></i>
-                <span class="ms-font-m">Unlock features and functionality</span>
-            </li>
-            <li class="ms-ListItem">
-                <i class="ms-Icon ms-Icon--Design ms-font-xl"></i>
-                <span class="ms-font-m">Create and visualize like a pro</span>
-            </li>
-        </ul>
-        <p class="ms-font-l">Modify the source files, then click <b>Run</b>.</p>
-        <div role="button" id="run" class="ms-welcome__action ms-Button ms-Button--hero ms-font-xl">
-            <span class="ms-Button-label">Run</span>
-        </div>
-        <p><label id="item-subject"></label></p>
-    </main>
-</body>
+<!-- Office UI Fabric JS and it's components are no longer actively supported. Please see https://aka.ms/PnP-OfficeFabricReact for recommended Patterns and Practices -->
+<!-- <link rel="stylesheet" href="https://appsforoffice.microsoft.com/fabric/2.1.0/fabric.components.min.css"> -->
 
+<body>
+
+    <div id="tridentmessage" style="display: none; padding:10px;">
+        This add-in will not run in your version of Office. Please upgrade either to
+        perpetual Office 2021 (or later) or to a Microsoft 365 account.
+    </div>
+
+    <!--carouselSection start************************************************************************************************************************-->
+    <div id="carouselSection">
+        <div class="container">
+
+            <p class="ms-font-m ms-welcome ms-Fabric">
+                <div id="firstRunBLock" class="ms-firstrun-pages">
+
+                    <div class="ms-firstrun-pages__header">
+                        <div class="ms-firstrun-pages__header--skip ms-font-m ms-fontColor-gray10">
+                            <span style="cursor: pointer;" class="pointerCursor" id="goToHomeLabel"> <span class="ms-fontColor-blue">Skip</span></span>
+                        </div>
+                        <div class="ms-firstrun-pages__welcome">
+                            <div style="text-align:center">
+                                <h1 id="welcomeHeadline" class="ms-font-xl ms-fontWeight-semibold ms-fontColor-gray100">COMBINE SHEETS</h1>
+                                <h4 class="ms-font-xs ms-fontWeight-light ms-fontColor-gray100">
+                                    SIMPLE.
+                                    <span class="ms-fontColor-gray100">FAST.</span>
+                                    ACCURATE.
+                                </h4>
+                                <hr>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="ms-firstrun-pages__content">
+                        <div class="ms-firstrun-pages__content--centered ms-font-l ms-fontColor-gray10">
+                            <span class="ms-fontWeight-light">Simple and easy tool to combine multiple worksheets  </span><i>into one. </i>
+                            <span class="ms-fontWeight-light">Copy the source format or Append to existing or remove Duplicates. </span>
+                            <span class="ms-fontWeight-light">Everything  <i>on a click.</i>  </span>
+                        </div>
+                    </div>
+                    <p></p>
+
+                    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                        <ol class="carousel-indicators">
+                            <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+                            <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+                            <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+                        </ol>
+                        <div class="carousel-inner">
+                            <div class="carousel-item active">
+                                <img class="d-block w-100" src="Images/pager-a.png" alt="fill calender month on a click">
+                            </div>
+                            <div class="carousel-item">
+                                <img class="d-block w-100" src="Images/pager-b.png" alt="automatic setup for bulk">
+                            </div>
+                            <div class="carousel-item">
+                                <img class="d-block w-100" src="Images/pager-c.png" alt="precise marking">
+                            </div>
+                        </div>
+                        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                        <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </div>
+                </div>
+        </div>
+        <p></p>
+        <ul>
+            <li><i>FORMAT: </i><span>choose to copy source format when you combine.</span></li>
+            <li><i>APPEND OR REPLACE: </i><span>replace or append to existing data when you combine.</span></li>
+            <li><i>DUPLICATES: </i><span>click remove duplicates in settings to get clean data.</span></li>
+        </ul>
+        <hr>
+        <p style="text-align:center;">
+
+
+            <button class="Button Button--primary" id="btnGetStarted">
+                <span class="Button-icon"><i class="ms-Icon ms-Icon--plus"></i></span>
+                <span class="Button-label">Get Started!</span>
+            </button>
+        </p>
+    </div>
+
+    <!--carouselSection END************************************************************************************************************************-->
+
+    <div id="mainSection">
+        <div class="ms-Fabric" dir="ltr">
+            <div id="content-main">
+                <div class="padding">
+                    <p hidden class="ms-font-m-plus ms-fontColor-neutralTertiary" id="toolHeader">
+                        STEP1:<i> click > "Fill Header"</i> <br>STEP2: <i> Fill ID/Names</i> <br>STEP3: <i>click > "Auto-Fill All"</i>
+                    </p>
+
+                    <div>
+                        <h6 id="shtTitle">Loading Sheet Names...</h6>
+
+                        <p></p>
+                        <div>
+                            <select id="lsBxShNm" style="height:150px;" class="form-select" size="3" aria-label="sheets" multiple="multiple">
+                            </select>
+                        </div>
+                        <br />
+                        <div>
+                            <p>
+                                <button type="button" class="btn btn-primary btn-sm btn-lg btn-block" id="btnCombineSheet" data-toggle="tooltip" data-placement="right" title="Combine Worksheets">
+                                    Combine Sheets
+                                </button>
+
+                                <button id="btnRefresh" class="btn btn-secondary rounded btn-sm" title="Refresh Worksheet List">
+                                    <span>
+                                        <img style="height:15px;width:15px;" src="Images/refresh.png" alt="Refresh Worksheet List">
+                                    </span>
+                                </button>
+
+
+                                <button id="btnExpand" class="btn btn-secondary rounded btn-sm" title="More Options">
+                                    <span>
+                                        <img class="image_expand" style="height:15px;width:15px;" src="Images/expand_more.png" alt="Settings">
+                                    </span>
+                                </button>
+
+
+                                <button id="btnHideSettings" class="btn btn-secondary rounded btn-sm" title="Show/Hide Settings">
+                                    <span>
+                                        <img style="height:15px;width:15px;" src="Images/settings.png" alt="Settings">
+                                    </span>
+                                </button>
+
+                            </p>
+
+                        </div>
+                    </div>
+
+                    <div id="expandSec" style="display:none;">
+                        <div>
+                            <p>
+                                <button type="button" class="btn btn-secondary btn-sm" id="btnRemoveDups" data-toggle="tooltip" data-placement="right" title="Remove Duplicates from Active Sheet">
+                                    Remove Duplicates
+                                </button>
+                            </p>
+                            <p>
+                                <button type="button" class="btn btn-danger btn-sm btn-lg btn-block" id="btnRemoveGenSheet" data-toggle="tooltip" data-placement="right" title="Remove Generated Worksheets">
+                                    Delete Generated Sheets
+                                </button>
+                            </p>
+
+                        </div>
+                        <hr>
+                    </div>
+
+                    <div id="settingsSec" style="display:none;">
+                        <div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="ckboxIncludeHeader" checked="checked">
+                                <label class="form-check-label" id="lblHeader" for="ckboxIncludeHeader">Include First Row Data</label>
+                            </div>
+
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="ckbxCopyFormat" value="">
+                                <label class="form-check-label" for="ckbxCopyFormat">Copy Source Formatting</label>
+                            </div>
+
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="ckbxAppend" value="">
+                                <label class="form-check-label" for="ckbxAppend">Append Data to Combined Sheet</label>
+                            </div>
+                        </div>
+                        <hr>
+                    </div>
+                </div>
+
+                <input type="hidden" id="last_row" readonly />
+                <input type="hidden" id="last_col" readonly />
+                <input type="hidden" id="last_col_add" readonly />
+            </div>
+
+
+            <!-- Modal Combine sheet Deletion-->
+            <div class="modal fade" id="modCombineSheet" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Are you Sure?</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            You are about to delete x sheets
+                        </div>
+                        <div class="modal-footer">
+                            <button id="btnCombineSheetYes" type="button" class="btn btn-danger" data-bs-dismiss="modal">Yes</button>
+                            <button type="button" class="btn btn-success" data-bs-dismiss="modal">No</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal -->
+            <div class="modal fade" id="modShtDel" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Are you Sure?</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            You are about to delete x sheets
+                        </div>
+                        <div class="modal-footer">
+                            <button id="btnDeleteSheet" type="button" class="btn btn-danger" data-bs-dismiss="modal">Yes</button>
+                            <button type="button" class="btn btn-success" data-bs-dismiss="modal">No</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Modal Remove Dups -->
+            <div class="modal fade" id="modRemoveDups" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Are you Sure?</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            You are about to delete x sheets
+                        </div>
+                        <div class="modal-footer">
+                            <button id="btnRemoveDupsYes" type="button" class="btn btn-danger" data-bs-dismiss="modal">Yes</button>
+                            <button type="button" class="btn btn-success" data-bs-dismiss="modal">No</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="footer">
+                <div class="ms-Grid ms-bgColor-themeSecondary">
+                    <div class="ms-Grid-row">
+                        <a target="_blank" class="ms-Link ms-Link--hero" href="https://dlohia.com">
+                            <div class="ms-Grid-col ms-u-sm12 ms-u-md12 ms-u-lg12"> <div class="ms-font-xl ms-fontColor-white">©DL Automations</div></div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Component used for displaying notifications -->
+            <div class="MessageBanner" id="notification-popup">
+                <div class="MessageBanner-content">
+                    <div class="MessageBanner-text">
+                        <div class="MessageBanner-clipper">
+                            <div class="ms-font-m-plus ms-fontWeight-semibold" id="notification-header"></div>
+                            <div class="ms-font-m ms-fontWeight-semilight" id="notification-body"></div>
+                        </div>
+                    </div>
+                    <button class="MessageBanner-expand" style="display:none"><i class="ms-Icon ms-Icon--chevronsDown"></i> </button>
+                    <div class="MessageBanner-action"></div>
+                </div>
+                <button class="MessageBanner-close"> <i class="ms-Icon ms-Icon--ChromeClose"></i> </button>
+            </div>
+        </div>
+    </div>
+
+    <!--
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+    -->
+
+    <script>
+        //$(document).ready(function(){
+        /*
+        The script below makes the following div display if the
+        webview is Trident, and hides the regular div. 
+        */
+        //if (navigator.userAgent.indexOf("Trident") == -1) {
+        if (navigator.userAgent.indexOf("Trident") !== -1) {
+            var tridentMessage = document.getElementById("tridentmessage");
+            tridentMessage.style.display = "block";
+
+            document.getElementById("mainSection").style.display = "none";
+            document.getElementById("carouselSection").style.display = "none";
+        } 
+
+        let settCtrl = document.getElementById("btnHideSettings");
+        settCtrl.addEventListener('click', function () {
+            if ($('#settingsSec').is(":visible")) {
+                $("#settingsSec").hide("slow");
+            }
+            else {
+                $("#settingsSec").show("slow");
+            }
+        });
+
+        let expandCtrl = document.getElementById("btnExpand");
+        expandCtrl.addEventListener('click', function () {
+            if ($('#expandSec').is(":visible")) {
+                $("#expandSec").hide("slow");
+                $(".image_expand").attr("src", "Images/expand_more.png");
+            }
+            else {
+                $("#expandSec").show("slow");
+                $(".image_expand").attr("src", "Images/expand_less.png");
+            }
+        });
+    </script>
+
+</body>
 </html>
