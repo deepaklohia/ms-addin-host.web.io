@@ -1,0 +1,227 @@
+<!-- Jai Guru Dev , Jai Shiv Shankar -- Designed by Deepak Lohia -- Dedicated to guruji and god  -->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <title>Daily Time Tracker</title>
+
+    <script src="Scripts/jquery-3.6.0.js" type="text/javascript"></script>
+    <script src="Scripts/MessageBanner.js" type="text/javascript"></script>
+
+
+    <!-- Office JavaScript API -->
+    <script type="text/javascript" src="https://appsforoffice.microsoft.com/lib/1.1/hosted/office.js"></script>
+
+
+    <!--START  --- ADDED FOR BOOTSTRAP REF-->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
+    <!--END  ---- ADDED FOR BOOTSTRAP REF-->
+    <!-- To enable offline debugging using a local reference to Office.js, use:  -->
+    <!-- <script src="Scripts/Office/MicrosoftAjax.js" type="text/javascript"></script>  -->
+    <!-- <script src="Scripts/Office/1/office.js" type="text/javascript"></script>  -->
+
+    <script src="taskpane.js" type="text/javascript"></script>
+    <link href="taskpane.css" rel="stylesheet" type="text/css" />
+    <!--
+    <link href="../Content/Button.css" rel="stylesheet" type="text/css" />
+        -->
+    <link href="Content/MessageBanner.css" rel="stylesheet" type="text/css" />
+
+    <!-- For Office UI Fabric Core, go to https://aka.ms/office-ui-fabric to learn more. -->
+    <link rel="stylesheet" href="https://static2.sharepointonline.com/files/fabric/office-ui-fabric-core/9.6.0/css/fabric.min.css">
+
+    <!-- To enable the offline use of Office UI Fabric Core, use: -->
+    <!-- link rel="stylesheet" href="Content/fabric.min.css" -->
+
+
+</head>
+
+<!-- Office UI Fabric JS and it's components are no longer actively supported. Please see https://aka.ms/PnP-OfficeFabricReact for recommended Patterns and Practices -->
+<!-- <link rel="stylesheet" href="https://appsforoffice.microsoft.com/fabric/2.1.0/fabric.components.min.css"> -->
+
+<body class="ms-Fabric" dir="ltr">
+    <div id="content-main">
+        <div class="padding">
+            <p class="ms-font-m-plus ms-fontColor-neutralTertiary">click on Start and Stop to play. Use Lap Time for continous time tracking</p>
+
+
+            <!-- TRIDENT MESSAGE -->
+            <div id="tridentmessage" style="display: none; padding:10px;">
+                This add-in will not run in your version of Office. Please upgrade either to
+                perpetual Office 2021 (or later) or to a Microsoft 365 account.
+            </div>
+
+
+            <!-- RESET BUTTON-->
+            <button class="btn btn-secondary btn-sm btn-lg btn-block" id="btnReset" title="Clear Active Sheet Data (Only)">
+                Reset
+            </button>
+
+            <br /><br />
+            <!-- START -->
+            <button class="btn btn-success btn" id="btnStart" title="Record Start time">
+                Start
+            </button>
+
+            <!-- LAP -->
+            <button class="btn btn-primary" id="btnLap" title="Record in continuation(Start + Stop)">
+                Lap
+            </button>
+
+            <!-- STOP-->
+            <button class="btn btn-danger" id="btnStop" title="Record End time">
+                Stop
+            </button>
+
+
+            <button id="btnExpand" class="btn btn-secondary rounded btn-sm" title="More Options">
+                <span>
+                    <img class="image_expand" style="height:15px;width:15px;" src="Images/expand_more.png">
+                </span>
+            </button>
+
+
+            <div id="expandSec" style="display:none">
+                <!--<div id="expandSec" style="display:none;">-->
+                <!-- RECORD LAST TEN AND 5 MIN-->
+                <br /><br />
+
+                <button class="btn btn-secondary btn-sm" id="btnCus1">
+                    RECORD LAST 5 MINS
+                </button>
+
+                <br /><br />
+
+                <button class="Btn btn-secondary btn-sm" id="btnCus2">
+                    RECORD LAST 10 MINS
+                </button>
+
+                <br /><br />
+
+                <button class="Btn btn-secondary btn-sm" id="btnCus3">
+                    RECORD LAST 15 MINS
+                </button>
+
+                <div class="qty mt-4">
+                    <span id="btnRowMinus" class="minus bg-dark">-</span>
+                    <input type="range" id="input_range" style="width:auto" class="form-range" min="1" max="50" step="1" value="15">
+                    <span id="btnRowPlus" class="plus bg-dark">+</span>
+                    <br>
+                </div>
+                <input type="hidden" id="txtRowInput" value="15">
+
+            </div>
+
+            <!-- Modal Clearing Data-->
+            <div class="modal fade" id="modClearData" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Clear Existing Data?</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            Clear Existing Data?
+                        </div>
+                        <div class="modal-footer">
+                            <button id="btnClearData" type="button" class="btn btn-danger" data-bs-dismiss="modal">Yes</button>
+                            <button type="button" class="btn btn-success" data-bs-dismiss="modal">No</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="footer">
+        <div class="ms-Grid ms-bgColor-themeSecondary">
+            <div class="ms-Grid-row">
+                <a target="_blank" class="ms-Link ms-Link--hero" href="https://dlohia.com/">
+                    <div class="ms-Grid-col ms-u-sm12 ms-u-md12 ms-u-lg12"> <div class="ms-font-xl ms-fontColor-white">©DL Automations</div></div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Component used for displaying notifications -->
+    <div class="MessageBanner" id="notification-popup">
+        <div class="MessageBanner-content">
+            <div class="MessageBanner-text">
+                <div class="MessageBanner-clipper">
+                    <div class="ms-font-m-plus ms-fontWeight-semibold" id="notification-header"></div>
+                    <div class="ms-font-m ms-fontWeight-semilight" id="notification-body"></div>
+                </div>
+            </div>
+            <button class="MessageBanner-expand" style="display:none"><i class="ms-Icon ms-Icon--chevronsDown"></i> </button>
+            <div class="MessageBanner-action"></div>
+        </div>
+        <button class="MessageBanner-close"> <i class="ms-Icon ms-Icon--ChromeClose"></i> </button>
+    </div>
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+    <script>
+
+        let rowMinusCtrl = document.getElementById("btnRowMinus");
+        let rowPlusCtrl = document.getElementById("btnRowPlus");
+        let cstmRowCtrl = document.getElementById("txtRowInput");
+        let btnTextCtrl = document.getElementById("btnCus3");
+        let sliderInputRng = document.getElementById("input_range");
+        let expandCtrl = document.getElementById("btnExpand");
+
+        if (navigator.userAgent.indexOf("Trident") !== -1) {
+            var tridentMessage = document.getElementById("tridentmessage");
+            tridentMessage.style.display = "block";
+            //document.getElementById("mainSection").style.display = "none";
+            //document.getElementById("carouselSection").style.display = "none";
+        }
+
+        sliderInputRng.addEventListener('input', (event) => {
+            var val = event.target.value;
+            cstmRowCtrl.value = val;
+            btnTextCtrl.innerHTML = "RECORD LAST " + val + " MINS";
+        });
+
+        rowMinusCtrl.addEventListener('click', function () {
+            var currentValue = Number(cstmRowCtrl.value);
+            if (currentValue > 1) {
+                currentValue = currentValue - 1
+                updateCusMinVal(currentValue);
+            }
+        });
+
+        //last min is upto 50
+        rowPlusCtrl.addEventListener('click', function () {
+            var currentValue = Number(cstmRowCtrl.value);
+            if (currentValue <= 49) {
+                currentValue = currentValue + 1
+                updateCusMinVal(currentValue);
+            }
+        });
+
+        function updateCusMinVal(currentValue) {
+            cstmRowCtrl.value = currentValue;
+            sliderInputRng.value = currentValue;
+            btnTextCtrl.innerHTML = "RECORD LAST " + currentValue + " MINS";
+        }
+
+        expandCtrl.addEventListener('click', function () {
+            if ($('#expandSec').is(":visible")) {
+                $("#expandSec").hide("slow");
+                $(".image_expand").attr("src", "Images/expand_more.png");
+            }
+            else {
+                $("#expandSec").show("slow");
+                $(".image_expand").attr("src", "Images/expand_less.png");
+            }
+        });
+    </script>
+
+
+</body>
+</html>
